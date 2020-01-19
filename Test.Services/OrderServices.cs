@@ -45,6 +45,7 @@ namespace Test.Services
         }
         public static void DeSerializeAllOrders()
         {
+            Console.WriteLine("Shifting Orders To Database");
             List<string> files = Directory.GetFiles(@"C:\Users\aman\source\repos\Test\Orders").ToList();
             foreach (var filePath in files)
             {
@@ -60,8 +61,6 @@ namespace Test.Services
                         context.SaveChanges();
                     }
                 }
-
-
             }
         }
 
