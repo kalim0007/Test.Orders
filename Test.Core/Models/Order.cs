@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -11,8 +12,12 @@ namespace Test.Core
     public class Order : BaseEntity, ISerializable
     {
         public bool Status { get; set; }
+        [DisplayName("Created At")]
         public DateTime CreatedAt { get; set; }
+        [DisplayName("File Name")]
         public string Filename { get; set; }
+        [DisplayName("File Content")]
+        public string FileContent { get; set; }
         public Order()
         {
 

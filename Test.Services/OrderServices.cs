@@ -46,22 +46,33 @@ namespace Test.Services
         public static void DeSerializeAllOrders()
         {
             List<string> files = Directory.GetFiles(@"C:\Users\aman\source\repos\Test\Orders").ToList();
-            foreach (var file in files)
+            foreach (var filePath in files)
             {
-                var order = DeSerializeOrders(file);
-                order.Id = Guid.NewGuid().ToString();
-                context.Orders.Add(order);
-                context.SaveChanges();
+                FileInfo file = new FileInfo(filePath);
+                var orderInDataBase = context.Orders.FirstOrDefault(o => o.Filename == file.Name);
+                if (file.Extension==".xml")
+                {
+                    if (orderInDataBase == null)
+                    {
+                        var order = DeSerializeOrders(file, filePath);
+                        order.Id = Guid.NewGuid().ToString();
+                        context.Orders.Add(order);
+                        context.SaveChanges();
+                    }
+                }
+
+
             }
         }
 
-        public static  Order DeSerializeOrders(string path)
+        public static  Order DeSerializeOrders(FileInfo file,string filePath)
         {
 
             XmlSerializer deserializer = new XmlSerializer(typeof(Order));
-            TextReader reader = new StreamReader(path);
+            TextReader reader = new StreamReader(filePath);
             var order = (Order)deserializer.Deserialize(reader);
-            order.Filename = path;
+            order.Filename = file.Name;
+            order.FileContent = System.IO.File.ReadAllText(filePath);
             order.CreatedAt = DateTime.Now;
             reader.Close();
             return order;
