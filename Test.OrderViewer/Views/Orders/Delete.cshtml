@@ -16,7 +16,23 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Status)
+            @Model.Status
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Filename)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Filename)
         </dd>
 
     </dl>

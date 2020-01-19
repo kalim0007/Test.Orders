@@ -18,13 +18,10 @@ namespace Test.Services
 
         public static void StartOders()
         {
-            bool start = true;
-            while (start!=false)
-            {
+            Console.WriteLine("To stop Writing the files out press  enter");
                 var timer = new Timer(SerializeOrders, null, 0, 5000);
-                start = bool.Parse(Console.ReadLine());
-            }
-
+                Console.ReadLine();
+            
         }
 
         public static void SerializeOrders(object o)
@@ -40,7 +37,8 @@ namespace Test.Services
             
             Order order = new Order(Status);
             XmlSerializer serializer = new XmlSerializer(typeof(Order));
-            using (TextWriter tw = new StreamWriter(@"C:\Users\aman\source\repos\Test\Orders\Order." + order.Id + ".xml"))
+            var Unique = Guid.NewGuid().ToString();
+            using (TextWriter tw = new StreamWriter(@"C:\Users\aman\source\repos\Test\Orders\Order." + Unique + ".xml"))
             {
                 serializer.Serialize(tw, order);
             }
@@ -51,6 +49,7 @@ namespace Test.Services
             foreach (var file in files)
             {
                 var order = DeSerializeOrders(file);
+                order.Id = Guid.NewGuid().ToString();
                 context.Orders.Add(order);
                 context.SaveChanges();
             }
@@ -62,6 +61,8 @@ namespace Test.Services
             XmlSerializer deserializer = new XmlSerializer(typeof(Order));
             TextReader reader = new StreamReader(path);
             var order = (Order)deserializer.Deserialize(reader);
+            order.Filename = path;
+            order.CreatedAt = DateTime.Now;
             reader.Close();
             return order;
         }

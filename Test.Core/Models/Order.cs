@@ -11,6 +11,8 @@ namespace Test.Core
     public class Order : BaseEntity, ISerializable
     {
         public bool Status { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string Filename { get; set; }
         public Order()
         {
 
