@@ -14,17 +14,22 @@ namespace Test.Services
     public class OrderServices
     {
         private static bool Status;
+        public static bool StopGenerating;
         private static DataContext context = new DataContext();
 
+
+        //This Method generate's an order every 5 seconds
         public static void StartOders()
         {
-            Console.WriteLine("To stop Writing the files out press  enter");
-                var timer = new Timer(SerializeOrders, null, 0, 5000);
-                Console.ReadLine();
-            
-        }
+            while (StopGenerating != true)
+            {
+                SerializeOrders();
+                Thread.Sleep(5000);
+            }
 
-        public static void SerializeOrders(object o)
+        }
+        // This Method Generate an Order
+        public static void SerializeOrders()
         {
             if (Status == true)
             {
@@ -43,6 +48,8 @@ namespace Test.Services
                 serializer.Serialize(tw, order);
             }
         }
+
+        // This Method Puts all the orders into the Database
         public static void DeSerializeAllOrders()
         {
             Console.WriteLine("Shifting Orders To Database");
@@ -63,7 +70,7 @@ namespace Test.Services
                 }
             }
         }
-
+        // This Method Deserialized an Order and Returns it.
         public static  Order DeSerializeOrders(FileInfo file,string filePath)
         {
 
