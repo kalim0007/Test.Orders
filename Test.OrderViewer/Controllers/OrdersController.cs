@@ -16,9 +16,23 @@ namespace Test.OrderViewer.Controllers
         private DataContext db = new DataContext();
 
         // GET: Orders
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
-            return View(db.Orders.ToList());
+             var orders = from o in db.Orders select o;
+            ViewData["DateSort"] = sortOrder == "date_asc" ? "date_desc" : "date_asc";
+            switch (sortOrder)
+            {
+                case "date_asc":
+                    orders = orders.OrderBy(s => s.CreatedAt);
+                    break;
+                case "date_desc":
+                    orders = orders.OrderByDescending(s => s.CreatedAt);
+                    break;
+                default:
+                    orders = orders.OrderBy(s => s.CreatedAt);
+                    break;
+            }
+            return View(orders);
         }
 
         public ActionResult Delete(string id)

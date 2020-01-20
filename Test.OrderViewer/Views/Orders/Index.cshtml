@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Orders";
+    var createdAt = @Html.DisplayNameFor(model => model.CreatedAt).ToString();
 }
 
 <h2>Orders</h2>
@@ -12,7 +13,7 @@
             @Html.DisplayNameFor(model => model.Status)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            @Html.ActionLink(createdAt, "Index", new { sortOrder = ViewData["DateSort"] })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Filename)
@@ -20,21 +21,22 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @item.Status
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedAt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Filename)
-        </td>
-        <td>
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Status
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Filename)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
