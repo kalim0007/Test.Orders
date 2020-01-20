@@ -15,6 +15,8 @@ namespace Test.Services
     {
         private static bool Status;
         public static bool StopGenerating;
+        private static readonly string FolderPath = @"C:\Users\aman\source\repos\Test\Orders";
+
         private static DataContext context = new DataContext();
 
 
@@ -35,15 +37,16 @@ namespace Test.Services
             {
                 Status = false;
             }
-            else 
+            else
             {
                 Status = true;
             }
-            
+
             Order order = new Order(Status);
             XmlSerializer serializer = new XmlSerializer(typeof(Order));
             var Unique = Guid.NewGuid().ToString();
-            using (TextWriter tw = new StreamWriter(@"C:\Users\aman\source\repos\Test\Orders\Order." + Unique + ".xml"))
+
+            using (TextWriter tw = new StreamWriter(FolderPath + Unique + ".xml"))
             {
                 serializer.Serialize(tw, order);
             }
@@ -53,12 +56,12 @@ namespace Test.Services
         public static void DeSerializeAllOrders()
         {
             Console.WriteLine("Shifting Orders To Database");
-            List<string> files = Directory.GetFiles(@"C:\Users\aman\source\repos\Test\Orders").ToList();
+            List<string> files = Directory.GetFiles(FolderPath).ToList();
             foreach (var filePath in files)
             {
                 FileInfo file = new FileInfo(filePath);
                 var orderInDataBase = context.Orders.FirstOrDefault(o => o.Filename == file.Name);
-                if (file.Extension==".xml")
+                if (file.Extension == ".xml")
                 {
                     if (orderInDataBase == null)
                     {
@@ -71,7 +74,7 @@ namespace Test.Services
             }
         }
         // This Method Deserialized an Order and Returns it.
-        public static  Order DeSerializeOrders(FileInfo file,string filePath)
+        public static Order DeSerializeOrders(FileInfo file, string filePath)
         {
 
             XmlSerializer deserializer = new XmlSerializer(typeof(Order));
