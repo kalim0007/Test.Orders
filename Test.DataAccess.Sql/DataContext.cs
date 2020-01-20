@@ -10,7 +10,7 @@ namespace Test.DataAccess.Sql
 {
     public class DataContext : DbContext
     {
-        public DataContext() :base("DefaultConnection")
+        public DataContext() :base("Orders")
         {
 
         }

@@ -15,7 +15,7 @@ namespace Test.Services
     {
         private static bool Status;
         public static bool StopGenerating;
-        private static readonly string FolderPath = @"C:\Users\aman\source\repos\Test\Orders";
+        private static readonly string FolderPath = @"C:\Users\aman\Desktop\Orders";
 
         private static DataContext context = new DataContext();
 
@@ -46,7 +46,7 @@ namespace Test.Services
             XmlSerializer serializer = new XmlSerializer(typeof(Order));
             var Unique = Guid.NewGuid().ToString();
 
-            using (TextWriter tw = new StreamWriter(FolderPath + Unique + ".xml"))
+            using (TextWriter tw = new StreamWriter(FolderPath + "\\" + Unique + ".xml"))
             {
                 serializer.Serialize(tw, order);
             }
